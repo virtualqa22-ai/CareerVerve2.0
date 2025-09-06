@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20' # Use Node.js 20 as per project context
+
+    - name: Install Frontend Dependencies
+      run: npm install
+      working-directory: frontend
+
+    - name: Install Backend Dependencies
+      run: npm install
+      working-directory: backend
+
+    - name: Run Frontend Lint
+      run: npm run lint
+      working-directory: frontend
+
+    - name: Run Backend Lint (if applicable)
+      # Assuming a lint script exists or will be added in backend/package.json
+      # For now, we'll just echo a message if no lint script is found
+      run: |
+        if grep -q '"lint":' backend/package.json; then
+          npm run lint
+        else
+          echo "No 'lint' script found in backend/package.json. Skipping backend lint."
+        fi
+      working-directory: backend
+
+    - name: Run Frontend Tests (Jest)
+      run: npm test
+      working-directory: frontend
+
+    - name: Run Backend Tests (Jest & Supertest)
+      run: npm test
+      working-directory: backend
+
+    - name: Run Cypress E2E Tests
+      run: npm run cypress:run
+      working-directory: frontend
+
+    - name: Run Playwright E2E Tests (Skipped for now as per user request)
+      run: echo "Playwright tests skipped as per user request."
+      # run: npm run playwright:test # Uncomment this line to enable Playwright tests
+      working-directory: frontend
