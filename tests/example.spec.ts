@@ -1,10 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-test('has title', async ({ page }) => {
+test('should display the main heading', async ({ page }) => {
   await page.goto('/');
-
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/CareerVerve/);
+  await expect(page.locator('h1')).toHaveText('Frontend Page');
 });
 
 test('get started link', async ({ page }) => {

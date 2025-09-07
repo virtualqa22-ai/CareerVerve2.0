@@ -1,8 +1,6 @@
-describe('Navigation', () => {
-  it('should navigate to the about page', () => {
+describe('Homepage', () => {
+  it('should display the main heading', () => {
     cy.visit('http://localhost:3000/');
-    // Assuming there's a link to an about page
-    // cy.get('a[href*="about"]').click();
-    // cy.url().should('include', '/about');
+    cy.contains('h1', 'Frontend Page').should('be.visible');
   });
 });
